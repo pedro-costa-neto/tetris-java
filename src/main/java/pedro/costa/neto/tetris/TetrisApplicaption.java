@@ -102,7 +102,7 @@ public class TetrisApplicaption extends Application {
                             System.out.println("--- posX: " + x + " / posY: " + y);
                             System.out.println("--- posX: " + (x * largura) + " / posY: " + (y * altura));
                             graphicsContext.drawImage(pce.getFigura(), (x * largura), (y * altura));
-                        }else {
+                        } else {
                             graphicsContext.drawImage(fundo, (x * largura), (y * altura));
                         }
                     }
@@ -122,8 +122,12 @@ public class TetrisApplicaption extends Application {
                     System.out.println("Y: " + t.intValue());
                     System.out.println("X: " + peca.getPosicaoFimX() + " / Y: " + peca.getPosicaoFimY());
 
-                    if ((t.intValue() + (peca.getPosicaoFimY() + 1)) == pointHeightMax) {
+                    int terminoPeca = (t.intValue() + (peca.getPosicaoFimY() + 1));
+                    System.out.println("TerminoPeca: " + terminoPeca);
+                    System.out.println("estrutura[" + (eixoX/largura) + "][" + terminoPeca + "]");
 
+                    if (terminoPeca == pointHeightMax || estrutura[(eixoX/largura)][terminoPeca] != null) {
+                        System.out.println("Entrei...");
                         List<PecaEstatica> pecaPixels = peca.getEstrutura();
                         for (PecaEstatica pecaEstatica : pecaPixels) {
                             int posX = pecaEstatica.getPosicaoX();
