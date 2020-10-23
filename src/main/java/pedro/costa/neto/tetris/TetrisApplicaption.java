@@ -7,12 +7,15 @@ import javafx.scene.Scene;
 import javafx.stage.Stage;
 
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.List;
 import javafx.animation.AnimationTimer;
+import javafx.event.EventHandler;
 import javafx.scene.Group;
 import javafx.scene.canvas.Canvas;
 import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.image.Image;
+import javafx.scene.input.KeyEvent;
 
 /**
  * JavaFX App
@@ -74,6 +77,8 @@ public class TetrisApplicaption extends Application {
 //
 //        Peca peca3 = new Peca03(imagem1, 5, 10, 20, 20);
 //        peca3.renderizarPeca(graphicsContext);
+        ArrayList<String> teclas = new ArrayList<>();
+
         new AnimationTimer() {
             private boolean teste = true;
             private Peca peca = new Peca03(imagem2, 20, 20);
@@ -83,6 +88,7 @@ public class TetrisApplicaption extends Application {
             private int pointWidthMax = (width / largura);
             private int pointHeightMax = (height / altura);
             private PecaEstatica[][] estrutura = new PecaEstatica[pointWidthMax][pointHeightMax];
+            private int eixoX = 140;
 
             public void handle(long currentNanoTime) {
                 Double t = (currentNanoTime - startNanoTime) / 1000000000.0;//1000000000.0;
@@ -98,11 +104,21 @@ public class TetrisApplicaption extends Application {
                         }
                     }
                 }
-                
+
                 if (teste) {
-                    peca.renderizarPeca(graphicsContext, 7, t.intValue());
+                    System.out.println("Teclas: " + teclas.size());
+                    if (teclas.contains("LEFT") && eixoX > 0) {
+                        eixoX -= 5;
+                    }
+
+                    if (teclas.contains("RIGHT") && eixoX < 300) {
+                        eixoX += 5;
+                    }
+
+                    peca.renderizarPeca(graphicsContext, (eixoX / largura), t.intValue());
                     System.out.println("Y: " + t.intValue());
                     System.out.println("X: " + peca.getPosicaoFimX() + " / Y: " + peca.getPosicaoFimY());
+
                     if ((t.intValue() + (peca.getPosicaoFimY() + 1)) == pointHeightMax) {
 
                         List<PecaEstatica> pecaPixels = peca.getEstrutura();
@@ -126,6 +142,26 @@ public class TetrisApplicaption extends Application {
         root.getChildren().add(canvas);
 
         Scene scene = new Scene(root);
+
+        scene.setOnKeyPressed(
+                new EventHandler<KeyEvent>() {
+            public void handle(KeyEvent e) {
+                String code = e.getCode().toString();
+
+                if (!teclas.contains(code)) {
+                    teclas.add(code);
+                }
+            }
+        });
+
+        scene.setOnKeyReleased(
+                new EventHandler<KeyEvent>() {
+            public void handle(KeyEvent e) {
+                String code = e.getCode().toString();
+                teclas.remove(code);
+            }
+        });
+
         stage.setScene(scene);
         stage.setTitle("Tetris - Pedro Costa");
         stage.setResizable(false);
