@@ -29,6 +29,7 @@ public class TetrisApplicaption extends Application {
 
         Image imagem1 = new Image("bloco_vermelho.png");
         Image imagem2 = new Image("bloco_azul.png");
+        Image imagem3 = new Image("bloco_transparente.png");
         Image fundo = new Image("fundo02.png");
 
         Canvas canvas = new Canvas(300, 400);
@@ -92,7 +93,7 @@ public class TetrisApplicaption extends Application {
 
             public void handle(long currentNanoTime) {
                 Double t = (currentNanoTime - startNanoTime) / 1000000000.0;//1000000000.0;
-                graphicsContext.drawImage(fundo, 0, 0);
+                //graphicsContext.drawImage(fundo, 0, 0);
                 System.out.println("--- Fundo");
                 for (int x = 0; x < estrutura.length; x++) {
                     for (int y = 0; y < estrutura[x].length; y++) {
@@ -101,6 +102,8 @@ public class TetrisApplicaption extends Application {
                             System.out.println("--- posX: " + x + " / posY: " + y);
                             System.out.println("--- posX: " + (x * largura) + " / posY: " + (y * altura));
                             graphicsContext.drawImage(pce.getFigura(), (x * largura), (y * altura));
+                        }else {
+                            graphicsContext.drawImage(fundo, (x * largura), (y * altura));
                         }
                     }
                 }
@@ -129,7 +132,7 @@ public class TetrisApplicaption extends Application {
                         }
 
                         System.out.println("Limite");
-                        peca = new Peca04(imagem1, 20, 20);
+                        peca = new Peca04(imagem2, 20, 20);
                         startNanoTime = System.nanoTime();
                         graphicsContext.clearRect(0, 0, 0, 0);
                         //teste = false;
