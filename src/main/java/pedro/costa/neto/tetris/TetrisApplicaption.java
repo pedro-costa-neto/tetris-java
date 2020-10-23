@@ -9,6 +9,7 @@ import javafx.stage.Stage;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Random;
 import javafx.animation.AnimationTimer;
 import javafx.event.EventHandler;
 import javafx.scene.Group;
@@ -127,7 +128,7 @@ public class TetrisApplicaption extends Application {
                     System.out.println("estrutura[" + (eixoX/largura) + "][" + terminoPeca + "]");
 
                     if (terminoPeca == pointHeightMax || estrutura[(eixoX/largura)][terminoPeca] != null) {
-                        System.out.println("Entrei...");
+                        System.out.println("Limite");
                         List<PecaEstatica> pecaPixels = peca.getEstrutura();
                         for (PecaEstatica pecaEstatica : pecaPixels) {
                             int posX = pecaEstatica.getPosicaoX();
@@ -135,8 +136,25 @@ public class TetrisApplicaption extends Application {
                             estrutura[posX][posY] = pecaEstatica;
                         }
 
-                        System.out.println("Limite");
-                        peca = new Peca04(imagem2, 20, 20);
+                        Random gerador = new Random();
+                        int numPeca = gerador.nextInt(3);
+                        int numCor  = gerador.nextInt(1);
+                        Image image = numCor == 0 ? imagem1 : imagem2;
+                        switch(numPeca) {
+                            case 0:
+                                peca = new Peca01(image, 20, 20);
+                                break;
+                            case 1:
+                                peca = new Peca02(image, 20, 20);
+                                break;
+                            case 2:
+                                peca = new Peca03(image, 20, 20);
+                                break;
+                            case 3:
+                                peca = new Peca04(image, 20, 20);
+                                break;
+                        }
+                        
                         startNanoTime = System.nanoTime();
                         graphicsContext.clearRect(0, 0, 0, 0);
                         //teste = false;
