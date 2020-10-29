@@ -89,25 +89,12 @@ public class TetrisApplicaption extends Application {
             private int height = 400;
             private int pointWidthMax = (width / largura);
             private int pointHeightMax = (height / altura);
-            private PecaEstatica[][] estrutura = new PecaEstatica[pointWidthMax][pointHeightMax];
+            private Scen scen = new Scen(fundo, 15, 20);
             private int eixoX = 140;
 
             public void handle(long currentNanoTime) {
                 Double t = (currentNanoTime - startNanoTime) / 1000000000.0;//1000000000.0;
-                //graphicsContext.drawImage(fundo, 0, 0);
-                System.out.println("--- Fundo");
-                for (int x = 0; x < estrutura.length; x++) {
-                    for (int y = 0; y < estrutura[x].length; y++) {
-                        PecaEstatica pce = estrutura[x][y];
-                        if (pce != null) {
-                            System.out.println("--- posX: " + x + " / posY: " + y);
-                            System.out.println("--- posX: " + (x * largura) + " / posY: " + (y * altura));
-                            graphicsContext.drawImage(pce.getFigura(), (x * largura), (y * altura));
-                        } else {
-                            graphicsContext.drawImage(fundo, (x * largura), (y * altura));
-                        }
-                    }
-                }
+                scen.renderGrid(graphicsContext, largura, altura);
 
                 if (teste) {
                     System.out.println("Teclas: " + teclas.size());
@@ -124,16 +111,14 @@ public class TetrisApplicaption extends Application {
                     System.out.println("X: " + peca.getPosicaoFimX() + " / Y: " + peca.getPosicaoFimY());
 
                     int terminoPeca = (t.intValue() + (peca.getPosicaoFimY() + 1));
-                    System.out.println("TerminoPeca: " + terminoPeca);
-                    System.out.println("estrutura[" + (eixoX/largura) + "][" + terminoPeca + "]");
 
-                    if (terminoPeca == pointHeightMax || estrutura[(eixoX/largura)][terminoPeca] != null) {
+                    if (terminoPeca == pointHeightMax || scen.isCollision((eixoX/largura), terminoPeca)) {
                         System.out.println("Limite");
                         List<PecaEstatica> pecaPixels = peca.getEstrutura();
                         for (PecaEstatica pecaEstatica : pecaPixels) {
                             int posX = pecaEstatica.getPosicaoX();
                             int posY = pecaEstatica.getPosicaoY();
-                            estrutura[posX][posY] = pecaEstatica;
+                            scen.setPieceStatic(pecaEstatica, posX, posY);
                         }
 
                         Random gerador = new Random();
