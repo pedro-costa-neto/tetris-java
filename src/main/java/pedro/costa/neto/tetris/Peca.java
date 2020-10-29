@@ -64,13 +64,13 @@ public abstract class Peca {
         return posicaoFimY;
     }
 
-    public List<PecaEstatica> getEstrutura() {
-        List<PecaEstatica> pecas = new ArrayList<>();
+    public List<PieceStatic> getEstrutura() {
+        List<PieceStatic> pecas = new ArrayList<>();
 
         for (int x = 0; x < this.estrutura.length; x++) {
             for (int y = 0; y < this.estrutura[x].length; y++) {
                 if (this.estrutura[x][y]) {
-                    pecas.add(new PecaEstatica(
+                    pecas.add(new PieceStatic(
                             this.imagem, 
                             (this.posicaoInicioX + (x * this.largura)) / this.largura,
                             (this.posicaoInicioY + (y * this.altura)) / this.altura

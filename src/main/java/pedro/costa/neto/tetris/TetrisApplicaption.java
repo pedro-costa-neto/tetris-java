@@ -114,11 +114,11 @@ public class TetrisApplicaption extends Application {
 
                     if (terminoPeca == pointHeightMax || scen.isCollision((eixoX/largura), terminoPeca)) {
                         System.out.println("Limite");
-                        List<PecaEstatica> pecaPixels = peca.getEstrutura();
-                        for (PecaEstatica pecaEstatica : pecaPixels) {
-                            int posX = pecaEstatica.getPosicaoX();
-                            int posY = pecaEstatica.getPosicaoY();
-                            scen.setPieceStatic(pecaEstatica, posX, posY);
+                        List<PieceStatic> pecaPixels = peca.getEstrutura();
+                        for (PieceStatic pieceStatic : pecaPixels) {
+                            int posX = pieceStatic.getPositionX();
+                            int posY = pieceStatic.getPositionY();
+                            scen.setPieceStatic(pieceStatic, posX, posY);
                         }
 
                         Random gerador = new Random();

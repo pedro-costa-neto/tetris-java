@@ -10,23 +10,23 @@ import javafx.scene.image.Image;
 public class Scen {
 
     private Image backFigure;
-    private PecaEstatica[][] partsGrid;
+    private PieceStatic[][] partsGrid;
 
     public Scen(Image backFigure, int positionX, int positionY) {
         this.backFigure = backFigure;
-        this.partsGrid = new PecaEstatica[positionX][positionY];
+        this.partsGrid = new PieceStatic[positionX][positionY];
     }
 
     public void renderGrid(GraphicsContext graphicsContext, int width, int height) {
         for (int axisX = 0; axisX < partsGrid.length; axisX++) {
             for (int axisY = 0; axisY < partsGrid[axisX].length; axisY++) {
-                PecaEstatica piece = partsGrid[axisX][axisY];
+                PieceStatic piece = partsGrid[axisX][axisY];
                 int axisPositionX = (axisX * width);
                 int axisPositionY = (axisY * height);
                 
                 if (piece != null) {
                     graphicsContext.drawImage(
-                            piece.getFigura(), 
+                            piece.getFigure(), 
                             axisPositionX, 
                             axisPositionY
                     );
@@ -41,11 +41,11 @@ public class Scen {
         }
     }
 
-    public void setPieceStatic(PecaEstatica pieceStatic, int positionX, int positionY) {
+    public void setPieceStatic(PieceStatic pieceStatic, int positionX, int positionY) {
         partsGrid[positionX][positionY] = pieceStatic;
     }
 
-    public PecaEstatica[][] getPartsGrid() {
+    public PieceStatic[][] getPartsGrid() {
         return partsGrid;
     }
 
