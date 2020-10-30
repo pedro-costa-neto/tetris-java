@@ -1,5 +1,6 @@
 package pedro.costa.neto.tetris;
 
+import java.util.List;
 import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.image.Image;
 
@@ -23,17 +24,17 @@ public class Scen {
                 PieceStatic piece = partsGrid[axisX][axisY];
                 int axisPositionX = (axisX * width);
                 int axisPositionY = (axisY * height);
-                
+
                 if (piece != null) {
                     graphicsContext.drawImage(
-                            piece.getFigure(), 
-                            axisPositionX, 
+                            piece.getFigure(),
+                            axisPositionX,
                             axisPositionY
                     );
                 } else {
                     graphicsContext.drawImage(
-                            backFigure, 
-                            axisPositionX, 
+                            backFigure,
+                            axisPositionX,
                             axisPositionY
                     );
                 }
@@ -41,7 +42,15 @@ public class Scen {
         }
     }
 
-    public void setPieceStatic(PieceStatic pieceStatic, int positionX, int positionY) {
+    public void setPiecesStatic(List<PieceStatic> piecesStatic) {
+        piecesStatic.forEach(pieceStatic -> {
+            this.setPieceStatic(pieceStatic);
+        });
+    }
+
+    public void setPieceStatic(PieceStatic pieceStatic) {
+        int positionX = pieceStatic.getPositionX();
+        int positionY = pieceStatic.getPositionY();
         partsGrid[positionX][positionY] = pieceStatic;
     }
 
