@@ -83,7 +83,7 @@ public class TetrisApplicaption extends Application {
 
         new AnimationTimer() {
             private boolean teste = true;
-            private Peca peca = new Peca03(imagem2, 20, 20);
+            private Piece peca = new Peca02(imagem2, 20, 20);
             private long startNanoTime = System.nanoTime();
             private int width = 300;
             private int height = 400;
@@ -95,9 +95,11 @@ public class TetrisApplicaption extends Application {
             public void handle(long currentNanoTime) {
                 Double t = (currentNanoTime - startNanoTime) / 1000000000.0;//1000000000.0;
                 scen.renderGrid(graphicsContext, largura, altura);
+                peca.renderPiece(graphicsContext, this.getWidthPositionMax(), t.intValue());
 
                 if (teste) {
                     System.out.println("Teclas: " + teclas.size());
+
                     if (teclas.contains("LEFT") && eixoX > 0) {
                         eixoX -= 5;
                     }
@@ -106,26 +108,33 @@ public class TetrisApplicaption extends Application {
                         eixoX += 5;
                     }
 
-                    peca.renderizarPeca(graphicsContext, (eixoX / largura), t.intValue());
-                    System.out.println("Y: " + t.intValue());
-                    System.out.println("X: " + peca.getPosicaoFimX() + " / Y: " + peca.getPosicaoFimY());
+                    
 
-                    int terminoPeca = (t.intValue() + (peca.getPosicaoFimY() + 1));
+                    boolean isCollision = false;
+                    for (int x = 0; x < peca.getFinalPositionX(); x++) {
+                        for (int y = 0; y < peca.getFinalPositionY(); y++) {
+                            int PosX = this.getWidthPositionMax() + x;
+                            int PosY = (t.intValue() + y + 1);
 
-                    if (terminoPeca == pointHeightMax || scen.isCollision((eixoX/largura), terminoPeca)) {
-                        System.out.println("Limite");
-                        List<PieceStatic> pecaPixels = peca.getEstrutura();
-                        for (PieceStatic pieceStatic : pecaPixels) {
-                            int posX = pieceStatic.getPositionX();
-                            int posY = pieceStatic.getPositionY();
-                            scen.setPieceStatic(pieceStatic, posX, posY);
+                            //System.out.println("X: " + PosX + " / Y: " + PosY);
+                            if (isHeightPositionMax(PosY) || (scen.isCollision(PosX, PosY) && !peca.isEmpty(x, y))) {
+                                isCollision = true;
+                                break;
+                            }
                         }
+                    }
+                    
+                    System.out.println("X: " + this.getWidthPositionMax() + " / Y: " + t.intValue());
+
+                    if (isCollision) {
+                        System.out.println("Limite");
+                        scen.setPiecesStatic(peca.getPiecesStatic());
 
                         Random gerador = new Random();
                         int numPeca = gerador.nextInt(3);
-                        int numCor  = gerador.nextInt(1);
+                        int numCor = gerador.nextInt(1);
                         Image image = numCor == 0 ? imagem1 : imagem2;
-                        switch(numPeca) {
+                        switch (numPeca) {
                             case 0:
                                 peca = new Peca01(image, 20, 20);
                                 break;
@@ -139,12 +148,21 @@ public class TetrisApplicaption extends Application {
                                 peca = new Peca04(image, 20, 20);
                                 break;
                         }
-                        
+
                         startNanoTime = System.nanoTime();
+                        eixoX = 140;
                         graphicsContext.clearRect(0, 0, 0, 0);
                         //teste = false;
                     }
                 }
+            }
+
+            private int getWidthPositionMax() {
+                int positionX = (this.eixoX / largura);
+                return (positionX + peca.getFinalPositionX()) > 14 ? (positionX - peca.getFinalPositionX()) : positionX;
+            }
+            public boolean isHeightPositionMax(int positionY) {
+                return pointHeightMax == positionY;
             }
         }.start();
 
