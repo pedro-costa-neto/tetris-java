@@ -9,7 +9,7 @@ import javafx.scene.image.Image;
  * @author Pedro Costa
  * @date 21/10/2020
  */
-public abstract class Piece {
+public class Piece {
 
     protected int width = 0;
     protected int height = 0;
@@ -17,13 +17,14 @@ public abstract class Piece {
     protected int initialPositionY = 0;
     protected int finalPositionX = 0;
     protected int finalPositionY = 0;
-    protected boolean[][] pieceStructure = new boolean[3][3];
+    protected boolean[][] pieceStructure;
     protected Image figure;
 
-    public Piece(Image figure, int width, int height) {
+    public Piece(Image figure, int pieceSize, boolean[][] pieceStructure) {
         this.figure = figure;
-        this.width = width;
-        this.height = height;
+        this.width = pieceSize;
+        this.height = pieceSize;
+        this.pieceStructure = pieceStructure;
     }
 
     public void renderPiece(GraphicsContext graphicsContext, int initialPositionX, int initialPositionY) {
@@ -70,8 +71,6 @@ public abstract class Piece {
 
         return pieces;
     }
-
-    public abstract void montarPeca();
 
     public int getFinalPositionX() {
         return finalPositionX + 1;

@@ -36,17 +36,15 @@ public class Screen extends AnimationTimer {
         this.graphicsContext = graphicsContext;
 
         Image fundo = new Image("fundo02.png");
-        Image imagem2 = new Image("bloco_azul.png");
-        scen = new Scen(fundo, this.positionMaxAxisX, this.positionMaxAxisY);
-
-        piece = new Peca02(imagem2, pieceSize, pieceSize);
+        this.scen = new Scen(fundo, this.positionMaxAxisX, this.positionMaxAxisY);
+        this.piece = PieceFactory.getPiece(pieceSize);
     }
 
     @Override
     public void handle(long currentNanoTime) {
         Double t = (currentNanoTime - startNanoTime) / 1000000000.0;
-        scen.renderGrid(graphicsContext, pieceSize, pieceSize);
-        piece.renderPiece(graphicsContext, this.getWidthPositionMax(), t.intValue());
+        this.scen.renderGrid(graphicsContext, pieceSize, pieceSize);
+        this.piece.renderPiece(graphicsContext, this.getWidthPositionMax(), t.intValue());
 
         System.out.println("Teclas: " + actionKeys.size());
 
@@ -64,7 +62,6 @@ public class Screen extends AnimationTimer {
                 int PosX = this.getWidthPositionMax() + x;
                 int PosY = (t.intValue() + y + 1);
 
-                //System.out.println("X: " + PosX + " / Y: " + PosY);
                 if (isHeightPositionMax(PosY) || (scen.isCollision(PosX, PosY) && !piece.isEmpty(x, y))) {
                     isCollision = true;
                     break;
@@ -76,27 +73,8 @@ public class Screen extends AnimationTimer {
 
         if (isCollision) {
             System.out.println("Limite");
-            scen.setPiecesStatic(piece.getPiecesStatic());
-
-            Random gerador = new Random();
-            int numPeca = gerador.nextInt(3);
-
-            Image image = new Image("bloco_azul.png");
-            switch (numPeca) {
-                case 0:
-                    piece = new Peca01(image, 20, 20);
-                    break;
-                case 1:
-                    piece = new Peca02(image, 20, 20);
-                    break;
-                case 2:
-                    piece = new Peca03(image, 20, 20);
-                    break;
-                case 3:
-                    piece = new Peca04(image, 20, 20);
-                    break;
-            }
-
+            this.scen.setPiecesStatic(piece.getPiecesStatic());
+            this.piece = PieceFactory.getPiece(pieceSize);
             this.startNanoTime = System.nanoTime();
             this.currentHorizontalPosition = getCenterHorizontal();
             this.graphicsContext.clearRect(0, 0, 0, 0);
