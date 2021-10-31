@@ -36,14 +36,14 @@ public class Screen extends AnimationTimer {
         this.graphicsContext = graphicsContext;
 
         Image fundo = new Image("fundo02.png");
-        this.scen = new Scen(fundo, this.positionMaxAxisX, this.positionMaxAxisY);
+        this.scen = new Scen(fundo, screenWidth, screenHeight);
         this.piece = PieceFactory.getPiece(pieceSize);
     }
 
     @Override
     public void handle(long currentNanoTime) {
         Double t = (currentNanoTime - startNanoTime) / 1000000000.0;
-        this.scen.renderGrid(graphicsContext, pieceSize, pieceSize);
+        this.scen.renderGrid(graphicsContext, this.screenWidth, this.screenHeight);
         this.piece.renderPiece(graphicsContext, this.getWidthPositionMax(), t.intValue());
 
         System.out.println("Teclas: " + actionKeys.size());

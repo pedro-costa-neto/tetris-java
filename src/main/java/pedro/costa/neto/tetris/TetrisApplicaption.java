@@ -28,11 +28,14 @@ public class TetrisApplicaption extends Application {
         int largura = 20;
         int altura = 20;
 
-        Canvas canvas = new Canvas(300, 400);
+        int windowWidth = 300;
+        int windowHeight = 400;
+
+        Canvas canvas = new Canvas(windowWidth, windowHeight);
         GraphicsContext graphicsContext = canvas.getGraphicsContext2D();
 
         ArrayList<String> teclas = new ArrayList<>();
-        Screen screen = new Screen(graphicsContext, 300, 400, altura, teclas);
+        Screen screen = new Screen(graphicsContext, windowWidth, windowHeight, altura, teclas);
         screen.start();
 
         Group root = new Group();
